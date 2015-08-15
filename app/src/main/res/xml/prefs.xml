@@ -40,6 +40,10 @@
             android:entries="@array/theme_texts"
             android:entryValues="@array/theme_values"
             android:defaultValue="0" />
+        <CheckBoxPreference
+            android:key="heads_up"
+            android:summary="@string/enable_heads_up_summary"
+            android:title="@string/enable_heads_up"/>
         <de.robv.android.xposed.installer.widget.IntegerListPreference
             android:key="default_view"
             android:title="@string/settings_default_view"
@@ -58,12 +62,12 @@
             android:persistent="false"
             android:summary="@string/settings_disable_resources_summary"
             android:title="@string/settings_disable_resources" />
-<!--
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="performance_experiment"
-            android:summary="@string/settings_performance_experiment_summary"
-            android:title="@string/settings_performance_experiment" />
--->
+        <!--
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="performance_experiment"
+                    android:summary="@string/settings_performance_experiment_summary"
+                    android:title="@string/settings_performance_experiment" />
+        -->
     </PreferenceCategory>
 </PreferenceScreen>

@@ -170,6 +170,8 @@
     <string name="settings_default_view_modules">Modules</string>
     <string name="settings_default_view_downloads">Download</string>
     <string name="settings_default_view_logs">Logs</string>
+    <string name="enable_heads_up">Enable Heads-Up notification</string>
+    <string name="enable_heads_up_summary">This option enables heads up notification on new/updated module</string>
 
     <!-- Support tab -->
     <string name="support_modules_label">Support for modules</string>
