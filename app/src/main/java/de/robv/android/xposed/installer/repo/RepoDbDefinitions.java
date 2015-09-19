@@ -69,12 +69,12 @@ public class RepoDbDefinitions {
 	public static interface ModuleVersionsColumns extends BaseColumns {
 		public static final String TABLE_NAME = "module_versions";
 		public static final String IDX_MODULE_ID = "module_versions_module_id_idx";
-
 		public static final String MODULE_ID = "module_id";
 		public static final String NAME = "name";
 		public static final String CODE = "code";
 		public static final String DOWNLOAD_LINK = "download_link";
 		public static final String MD5SUM = "md5sum";
+	    public static final String SIZE = "size";
 		public static final String CHANGELOG = "changelog";
 		public static final String CHANGELOG_IS_HTML = "changelog_is_html";
 		public static final String RELTYPE = "reltype";
@@ -83,12 +83,13 @@ public class RepoDbDefinitions {
 	static final String SQL_CREATE_TABLE_MODULE_VERSIONS =
 		"CREATE TABLE " + ModuleVersionsColumns.TABLE_NAME + " (" +
 		ModuleVersionsColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-		ModuleVersionsColumns.MODULE_ID + " INTEGER NOT NULL REFERENCES "
-			+ ModulesColumns.TABLE_NAME + " ON DELETE CASCADE, " +
+		ModuleVersionsColumns.MODULE_ID + " INTEGER NOT NULL REFERENCES " +
+        ModulesColumns.TABLE_NAME + " ON DELETE CASCADE, " +
 		ModuleVersionsColumns.NAME + " TEXT NOT NULL, " +
 		ModuleVersionsColumns.CODE + " INTEGER NOT NULL, " +
 		ModuleVersionsColumns.DOWNLOAD_LINK + " TEXT, " +
 		ModuleVersionsColumns.MD5SUM + " TEXT, " +
+		ModuleVersionsColumns.SIZE + " INTEGER NOT NULL, " +
 		ModuleVersionsColumns.CHANGELOG + " TEXT, " +
 		ModuleVersionsColumns.CHANGELOG_IS_HTML + " INTEGER DEFAULT 0, " +
 		ModuleVersionsColumns.RELTYPE + " INTEGER DEFAULT 0, " +
