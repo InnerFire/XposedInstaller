@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -81,6 +82,16 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.tab_downloader, container, false);
 		StickyListHeadersListView lv = (StickyListHeadersListView) v.findViewById(R.id.listModules);
+		final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) v
+				.findViewById(R.id.swiperefreshlayout);
+		refreshLayout.setOnRefreshListener(
+				new SwipeRefreshLayout.OnRefreshListener() {
+					@Override
+                    public void onRefresh() {
+                        mRepoLoader.setSwipeRefreshLayout(refreshLayout);
+                        mRepoLoader.triggerReload(true);
+                    }
+				});
 
 		mRepoLoader.addListener(this, true);
 		mModuleUtil.addListener(this);
@@ -174,9 +185,6 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_refresh:
-				mRepoLoader.triggerReload(true);
-				return true;
 			case R.id.menu_sort:
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle(R.string.download_sorting_title);
@@ -184,7 +192,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						mSortingOrder = which;
-						mPref.edit().putInt("download_sorting_order", mSortingOrder).commit();
+						mPref.edit().putInt("download_sorting_order", mSortingOrder).apply();
 						reloadItems();
 						dialog.dismiss();
 					}

@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.os.FileUtils;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import de.robv.android.xposed.installer.util.AssetUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil;
@@ -169,7 +170,7 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
 		return mInstance.mPref;
 	}
 
-	public void updateProgressIndicator() {
+	public void updateProgressIndicator(final SwipeRefreshLayout refreshLayout) {
 		final boolean isLoading = RepoLoader.getInstance().isLoading() || ModuleUtil.getInstance().isLoading();
 		runOnUiThread(new Runnable() {
 			@Override
@@ -177,6 +178,8 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
 				synchronized (XposedApp.this) {
 					if (mCurrentActivity != null)
 						mCurrentActivity.setProgressBarIndeterminateVisibility(isLoading);
+					if (refreshLayout != null)
+						refreshLayout.setRefreshing(isLoading);
 				}
 			}
 		});
@@ -194,7 +197,7 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
 	@Override
 	public synchronized void onActivityResumed(Activity activity) {
 		mCurrentActivity = activity;
-		updateProgressIndicator();
+		updateProgressIndicator(null);
 	}
 
 	@Override

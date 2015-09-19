@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -42,16 +43,17 @@ public class RepoLoader {
 
 	private boolean mIsLoading = false;
 	private boolean mReloadTriggeredOnce = false;
-	private final List<RepoListener> mListeners = new CopyOnWriteArrayList<RepoListener>();
+	private final List<RepoListener> mListeners = new CopyOnWriteArrayList<>();
 
 	private static final int UPDATE_FREQUENCY = 24 * 60 * 60 * 1000;
 	private static final String DEFAULT_REPOSITORIES = "http://dl.xposed.info/repo/full.xml.gz";
 	private Map<Long,Repository> mRepositories = null;
 
 	private ReleaseType mGlobalReleaseType;
-	private final Map<String, ReleaseType> mLocalReleaseTypesCache = new HashMap<String, ReleaseType>();
+	private final Map<String, ReleaseType> mLocalReleaseTypesCache = new HashMap<>();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-	private RepoLoader() {
+    private RepoLoader() {
 		mInstance = this;
 		mApp = XposedApp.getInstance();
 		mPref = mApp.getSharedPreferences("repo", Context.MODE_PRIVATE);
@@ -197,14 +199,14 @@ public class RepoLoader {
 				return;
 			mIsLoading = true;
 		}
-		mApp.updateProgressIndicator();
+		mApp.updateProgressIndicator(mSwipeRefreshLayout);
 
 		new Thread("RepositoryReload") {
 			public void run() {
-				final List<String> messages = new LinkedList<String>();
+				final List<String> messages = new LinkedList<>();
 				boolean hasChanged = downloadAndParseFiles(messages);
 
-				mPref.edit().putLong("last_update_check", System.currentTimeMillis()).commit();
+				mPref.edit().putLong("last_update_check", System.currentTimeMillis()).apply();
 
 				if (!messages.isEmpty()) {
 					XposedApp.runOnUiThread(new Runnable() {
@@ -222,10 +224,14 @@ public class RepoLoader {
 				synchronized (this) {
 					mIsLoading = false;
 				}
-				mApp.updateProgressIndicator();
+				mApp.updateProgressIndicator(mSwipeRefreshLayout);
 			}
 		}.start();
 	}
+
+    public void setSwipeRefreshLayout(SwipeRefreshLayout mSwipeRefreshLayout) {
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
+    }
 
 	public void triggerFirstLoadIfNecessary() {
 		if (!mReloadTriggeredOnce)
@@ -233,7 +239,7 @@ public class RepoLoader {
 	}
 
 	public void resetLastUpdateCheck() {
-		mPref.edit().remove("last_update_check").commit();
+		mPref.edit().remove("last_update_check").apply();
 	}
 
 	public synchronized boolean isLoading() {
