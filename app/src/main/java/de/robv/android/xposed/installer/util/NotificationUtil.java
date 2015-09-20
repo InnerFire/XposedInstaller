@@ -66,7 +66,7 @@ public final class NotificationUtil {
 				.setContentIntent(pModulesTab)
                 .setVibrate(new long[]{0})
 				.setAutoCancel(true)
-				.setSmallIcon(R.drawable.ic_notification);
+				.setSmallIcon(R.mipmap.ic_notification);
 
         if (prefs.getBoolean("heads_up", false))
             builder.setPriority(2);
@@ -85,7 +85,7 @@ public final class NotificationUtil {
 			// Only show the quick activation button if any module has been enabled before,
 			// to ensure that the user know the way to disable the module later.
 			if (!ModuleUtil.getInstance().getEnabledModules().isEmpty())
-				builder.addAction(R.drawable.ic_menu_refresh, sContext.getString(R.string.activate_and_reboot), pActivateAndReboot);
+				builder.addAction(R.mipmap.ic_menu_refresh, sContext.getString(R.string.activate_and_reboot), pActivateAndReboot);
 		}
 
 		sNotificationManager.notify(packageName, NOTIFICATION_MODULE_NOT_ACTIVATED_YET, builder.build());
@@ -106,7 +106,7 @@ public final class NotificationUtil {
 				.setContentIntent(pInstallTab)
                 .setVibrate(new long[]{0})
 				.setAutoCancel(true)
-				.setSmallIcon(R.drawable.ic_notification);
+				.setSmallIcon(R.mipmap.ic_notification);
 
         if (prefs.getBoolean("heads_up", false))
             builder.setPriority(2);
