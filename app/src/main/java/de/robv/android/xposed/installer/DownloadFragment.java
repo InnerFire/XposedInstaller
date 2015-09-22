@@ -60,16 +60,33 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 		mAdapter.setFilterQueryProvider(new FilterQueryProvider() {
 			@Override
 			public Cursor runQuery(CharSequence constraint) {
-				// TODO Instead of this workaround, show a "downloads disabled" message
-				if (XposedApp.getInstance().areDownloadsEnabled())
+				if (XposedApp.getInstance().areDownloadsEnabled()) {
 					return RepoDb.queryModuleOverview(mSortingOrder, constraint);
-				else
+				} else {
+					showDisabledDownloadsDialog();
 					return null;
+				}
 			}
 		});
 		mSortingOrder = mPref.getInt("download_sorting_order", RepoDb.SORT_STATUS);
 		setHasOptionsMenu(true);
 	}
+
+    private void showDisabledDownloadsDialog() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.download_disabled)
+                .content(R.string.download_disabled_description)
+                .positiveText(R.string.download_open_settings)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
