@@ -1,15 +1,16 @@
 package de.robv.android.xposed.installer;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.RepoParser;
 import de.robv.android.xposed.installer.util.NavUtil;
@@ -43,7 +44,7 @@ public class DownloadDetailsFragment extends Fragment {
 		TextView description = (TextView) view.findViewById(R.id.download_description);
 		if (module.description != null) {
 			if (module.descriptionIsHtml) {
-				description.setText(RepoParser.parseSimpleHtml(module.description));
+				description.setText(RepoParser.parseSimpleHtml(getActivity(), module.description, description));
 				description.setMovementMethod(LinkMovementMethod.getInstance());
 			} else {
 				description.setText(module.description);

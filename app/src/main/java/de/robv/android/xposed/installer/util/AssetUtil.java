@@ -1,10 +1,5 @@
 package de.robv.android.xposed.installer.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -12,6 +7,12 @@ import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.FileUtils;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import de.robv.android.xposed.installer.XposedApp;
 
 public class AssetUtil {

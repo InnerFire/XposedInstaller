@@ -25,6 +25,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.afollestad:material-dialogs:0.7.9.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.machinarius:preferencefragment:0.1.1'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])

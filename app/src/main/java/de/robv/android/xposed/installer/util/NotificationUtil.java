@@ -1,8 +1,5 @@
 package de.robv.android.xposed.installer.util;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -14,11 +11,13 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import de.robv.android.xposed.installer.InstallerFragment;
 import de.robv.android.xposed.installer.ModulesFragment;
 import de.robv.android.xposed.installer.R;
 import de.robv.android.xposed.installer.XposedApp;
-import de.robv.android.xposed.installer.XposedBaseActivity;
 
 public final class NotificationUtil {
 	private static Context sContext = null;

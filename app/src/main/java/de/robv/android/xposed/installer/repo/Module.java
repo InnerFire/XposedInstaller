@@ -1,10 +1,10 @@
 package de.robv.android.xposed.installer.repo;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import android.util.Pair;
 
 public class Module {
 	public final Repository repository;

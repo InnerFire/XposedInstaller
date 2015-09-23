@@ -1,9 +1,10 @@
 package de.robv.android.xposed.installer.util;
 
-import java.util.List;
-
 import android.os.Handler;
 import android.os.HandlerThread;
+
+import java.util.List;
+
 import eu.chainfire.libsuperuser.Shell;
 import eu.chainfire.libsuperuser.Shell.OnCommandResultListener;
 

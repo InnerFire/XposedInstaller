@@ -1,9 +1,5 @@
 package de.robv.android.xposed.installer.repo;
 
-import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Pair;
+
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import de.robv.android.xposed.installer.repo.RepoDbDefinitions.InstalledModulesColumns;
 import de.robv.android.xposed.installer.repo.RepoDbDefinitions.InstalledModulesUpdatesColumns;
 import de.robv.android.xposed.installer.repo.RepoDbDefinitions.ModuleVersionsColumns;

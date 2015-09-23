@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+
 import de.robv.android.xposed.installer.R;
 import de.robv.android.xposed.installer.XposedBaseActivity;
 

@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
 import de.robv.android.xposed.installer.util.DownloadsUtil;
 
 public class DownloadReceiver extends BroadcastReceiver {

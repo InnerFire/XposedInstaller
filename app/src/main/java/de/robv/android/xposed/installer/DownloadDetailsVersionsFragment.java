@@ -1,9 +1,5 @@
 package de.robv.android.xposed.installer;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.util.Date;
+
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.repo.ReleaseType;
@@ -183,7 +184,7 @@ public class DownloadDetailsVersionsFragment extends ListFragment {
 				holder.txtChanges.setVisibility(View.VISIBLE);
 
 				if (item.changelogIsHtml) {
-					holder.txtChanges.setText(RepoParser.parseSimpleHtml(item.changelog));
+					holder.txtChanges.setText(RepoParser.parseSimpleHtml(getActivity(), item.changelog, holder.txtChanges));
 					holder.txtChanges.setMovementMethod(LinkMovementMethod.getInstance());
 				} else {
 					holder.txtChanges.setText(item.changelog);
