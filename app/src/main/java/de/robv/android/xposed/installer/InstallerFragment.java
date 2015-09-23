@@ -1,5 +1,22 @@
 package de.robv.android.xposed.installer;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,21 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Looper;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
 import de.robv.android.xposed.installer.util.AssetUtil;
 import de.robv.android.xposed.installer.util.NavUtil;
 import de.robv.android.xposed.installer.util.NotificationUtil;
@@ -58,8 +60,7 @@ public class InstallerFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.tab_installer, container, false);
 
 		btnInstallMode = (Button) v.findViewById(R.id.framework_install_mode);
@@ -87,11 +88,9 @@ public class InstallerFragment extends Fragment {
 		} else if (Build.VERSION.SDK_INT == 15) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk15";
 			isCompatible = checkCompatibility();
-
 		} else if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT <= 19) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk16";
 			isCompatible = checkCompatibility();
-
 		} else if (Build.VERSION.SDK_INT > 19) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk16";
 			isCompatible = checkCompatibility();
@@ -115,7 +114,6 @@ public class InstallerFragment extends Fragment {
 							refreshVersions();
 							if (success)
 								ModuleUtil.getInstance().updateModulesList(false);
-
 							// Start tracking the last seen version, irrespective of the installation method and the outcome.
 							// 0 or a stale version might be registered, if a recovery installation was requested
 							// It will get up to date when the last seen version is updated on a later panel startup
@@ -134,7 +132,6 @@ public class InstallerFragment extends Fragment {
 			txtInstallError.setVisibility(View.VISIBLE);
 			btnInstall.setEnabled(false);
 		}
-
 		btnUninstall.setOnClickListener(new AsyncClickListener(btnUninstall.getText()) {
 			@Override
 			public void onAsyncClick(View v) {
@@ -143,7 +140,6 @@ public class InstallerFragment extends Fragment {
 					@Override
 					public void run() {
 						refreshVersions();
-
 						// Update tracking of the last seen version
 						if (appProcessInstalledVersion == 0) {
 							// Uninstall completed, check if an Xposed binary doesn't reappear
@@ -184,42 +180,47 @@ public class InstallerFragment extends Fragment {
 		btnReboot.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				areYouSure(R.string.reboot, new AsyncDialogClickListener(btnReboot.getText()) {
-					@Override
-					public void onAsyncClick(DialogInterface dialog, int which) {
-						reboot(null);
-					}
-				});
+				areYouSure(R.string.reboot,
+						new MaterialDialog.ButtonCallback() {
+							@Override
+							public void onPositive(MaterialDialog dialog) {
+								super.onPositive(dialog);
+								reboot(null);
+							}
+						});
 			}
 		});
 
 		btnSoftReboot.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				areYouSure(R.string.soft_reboot, new AsyncDialogClickListener(btnSoftReboot.getText()) {
-					@Override
-					public void onAsyncClick(DialogInterface dialog, int which) {
-						softReboot();
-					}
-				});
+				areYouSure(R.string.soft_reboot,
+						new MaterialDialog.ButtonCallback() {
+							@Override
+							public void onPositive(MaterialDialog dialog) {
+								super.onPositive(dialog);
+								softReboot();
+							}
+						});
 			}
 		});
 
 		if (!XposedApp.getPreferences().getBoolean("hide_install_warning", false)) {
 			final View dontShowAgainView = inflater.inflate(R.layout.dialog_install_warning, null);
-			new AlertDialog.Builder(getActivity())
-			.setTitle(R.string.install_warning_title)
-			.setView(dontShowAgainView)
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					CheckBox checkBox = (CheckBox) dontShowAgainView.findViewById(android.R.id.checkbox);
-					if (checkBox.isChecked())
-						XposedApp.getPreferences().edit().putBoolean("hide_install_warning", true).commit();
-				}
-			})
-			.setCancelable(false)
-			.show();
+
+			new MaterialDialog.Builder(getActivity())
+					.title(R.string.install_warning_title)
+					.customView(dontShowAgainView, false)
+					.positiveText(android.R.string.ok)
+					.callback(new MaterialDialog.ButtonCallback() {
+						@Override
+						public void onPositive(MaterialDialog dialog) {
+							super.onPositive(dialog);
+							CheckBox checkBox = (CheckBox) dontShowAgainView.findViewById(android.R.id.checkbox);
+							if (checkBox.isChecked())
+								XposedApp.getPreferences().edit().putBoolean("hide_install_warning", true).apply();
+						}
+					}).cancelable(false).show();
 		}
 
 		/* Detection of reverts to /system/bin/app_process.
@@ -242,7 +243,6 @@ public class InstallerFragment extends Fragment {
 					vInstallRevertedWarning.setVisibility(View.GONE);
 				}
 			});
-
 			if (lastSeenBinary < 0 && appProcessInstalledVersion > 0) {
 				// Uninstall was previously completed but an Xposed binary has reappeared
 				txtInstallRevertedWarning.setText(getString(R.string.uninstall_reverted,
@@ -408,10 +408,9 @@ public class InstallerFragment extends Fragment {
 			return;
 		}
 
-		AlertDialog dialog = new AlertDialog.Builder(getActivity())
-		.setMessage(result)
-		.setPositiveButton(android.R.string.ok, null)
-		.create();
+		MaterialDialog dialog = new MaterialDialog
+				.Builder(getActivity())
+				.content(result).positiveText(android.R.string.ok).build();
 		dialog.show();
 		TextView txtMessage = (TextView) dialog.findViewById(android.R.id.message);
 		txtMessage.setTextSize(14);
@@ -420,35 +419,29 @@ public class InstallerFragment extends Fragment {
 		refreshKnownIssue();
 	}
 
-	private void areYouSure(int messageTextId, DialogInterface.OnClickListener yesHandler) {
-		new AlertDialog.Builder(getActivity())
-		.setTitle(messageTextId)
-		.setMessage(R.string.areyousure)
-		.setIconAttribute(android.R.attr.alertDialogIcon)
-		.setPositiveButton(android.R.string.yes, yesHandler)
-		.setNegativeButton(android.R.string.no, null)
-		.create()
-		.show();
+	private void areYouSure(int messageTextId, MaterialDialog.ButtonCallback yesHandler) {
+		new MaterialDialog.Builder(getActivity()).title(messageTextId)
+				.content(R.string.areyousure)
+				.iconAttr(android.R.attr.alertDialogIcon)
+				.positiveText(android.R.string.yes)
+				.negativeText(android.R.string.no).callback(yesHandler).show();
 	}
 
-	private void showConfirmDialog(final String message, final DialogInterface.OnClickListener yesHandler,
-			final DialogInterface.OnClickListener noHandler) {
+	private void showConfirmDialog(final String message, final MaterialDialog.ButtonCallback callback) {
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					showConfirmDialog(message, yesHandler, noHandler);
+					showConfirmDialog(message, callback);
 				}
 			});
 			return;
 		}
 
-		AlertDialog dialog = new AlertDialog.Builder(getActivity())
-		.setMessage(message)
-		.setPositiveButton(android.R.string.yes, yesHandler)
-		.setNegativeButton(android.R.string.no, noHandler)
-		.create();
-		dialog.show();
+		MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+				.content(message).positiveText(android.R.string.yes)
+				.negativeText(android.R.string.no).callback(callback).build();
+
 		TextView txtMessage = (TextView) dialog.findViewById(android.R.id.message);
 		txtMessage.setTextSize(14);
 
@@ -760,12 +753,13 @@ public class InstallerFragment extends Fragment {
 		messages.add("");
 		messages.add(getString(R.string.reboot_confirmation));
 		showConfirmDialog(TextUtils.join("\n", messages).trim(),
-			new AsyncDialogClickListener(getString(R.string.reboot)) {
-				@Override
-				protected void onAsyncClick(DialogInterface dialog, int which) {
-					reboot(null);
-				}
-			}, null);
+				new MaterialDialog.ButtonCallback() {
+					@Override
+					public void onPositive(MaterialDialog dialog) {
+						super.onPositive(dialog);
+						reboot(null);
+					}
+				});
 	}
 
 	private void offerRebootToRecovery(List<String> messages, final String file, final int installMode) {
@@ -777,23 +771,28 @@ public class InstallerFragment extends Fragment {
 		messages.add("");
 		messages.add(getString(R.string.reboot_recovery_confirmation));
 		showConfirmDialog(TextUtils.join("\n", messages).trim(),
-			new AsyncDialogClickListener(getString(R.string.reboot)) {
-				@Override
-				protected void onAsyncClick(DialogInterface dialog, int which) {
-					reboot("recovery");
-				}
-			},
-			new AsyncDialogClickListener(null) {
-				@Override
-				protected void onAsyncClick(DialogInterface dialog, int which) {
-					if (installMode == INSTALL_MODE_RECOVERY_AUTO) {
-						// clean up to avoid unwanted flashing
-						mRootUtil.executeWithBusybox("rm /cache/recovery/command", null);
-						mRootUtil.executeWithBusybox("rm /cache/recovery/" + file, null);
-						AssetUtil.removeBusybox();
+				new MaterialDialog.ButtonCallback() {
+					@Override
+					public void onPositive(MaterialDialog dialog) {
+						super.onPositive(dialog);
+						reboot("recovery");
+					}
+
+					@Override
+					public void onNegative(MaterialDialog dialog) {
+						super.onNegative(dialog);
+						if (installMode == INSTALL_MODE_RECOVERY_AUTO) {
+							// clean up to avoid unwanted flashing
+							mRootUtil.executeWithBusybox(
+									"rm /cache/recovery/command", null);
+							mRootUtil.executeWithBusybox(
+									"rm /cache/recovery/" + file, null);
+							AssetUtil.removeBusybox();
+						}
 					}
 				}
-			});
+
+		);
 	}
 
 	private void softReboot() {

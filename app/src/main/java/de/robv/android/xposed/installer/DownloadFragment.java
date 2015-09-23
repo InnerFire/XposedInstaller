@@ -1,19 +1,13 @@
 package de.robv.android.xposed.installer;
 
-import java.text.DateFormat;
-import java.util.Date;
-
-import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -30,8 +24,10 @@ import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import de.robv.android.xposed.installer.repo.RepoDb;
 import de.robv.android.xposed.installer.repo.RepoDbDefinitions.OverviewColumnsIndexes;
@@ -42,6 +38,8 @@ import de.robv.android.xposed.installer.util.NavUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.util.RepoLoader.RepoListener;
 import de.robv.android.xposed.installer.util.ThemeUtil;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class DownloadFragment extends Fragment implements RepoListener, ModuleListener {
 	private SharedPreferences mPref;
@@ -186,18 +184,17 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_sort:
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle(R.string.download_sorting_title);
-				builder.setSingleChoiceItems(R.array.download_sort_order, mSortingOrder, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						mSortingOrder = which;
-						mPref.edit().putInt("download_sorting_order", mSortingOrder).apply();
-						reloadItems();
-						dialog.dismiss();
-					}
-				});
-				builder.show();
+				new MaterialDialog.Builder(getActivity()).title(R.string.download_sorting_title).items(R.array.download_sort_order).itemsCallbackSingleChoice(mSortingOrder,
+						new MaterialDialog.ListCallbackSingleChoice() {
+							@Override
+							public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+								mSortingOrder = i;
+								mPref.edit().putInt("download_sorting_order", mSortingOrder).apply();
+								reloadItems();
+								materialDialog.dismiss();
+								return true;
+							}
+						}).show();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
