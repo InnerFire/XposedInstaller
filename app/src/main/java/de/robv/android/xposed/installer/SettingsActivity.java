@@ -1,15 +1,18 @@
 package de.robv.android.xposed.installer;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.ColorChooserDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,16 +21,13 @@ import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.util.ThemeUtil;
 import de.robv.android.xposed.installer.util.UIUtil;
 
-public class SettingsActivity extends XposedBaseActivity {
+public class SettingsActivity extends XposedBaseActivity implements ColorChooserDialog.ColorCallback {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeUtil.setTheme(this);
         setContentView(R.layout.activity_container);
-
-        if (UIUtil.isLollipop()) {
-            this.getWindow().setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
-        }
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -52,8 +52,16 @@ public class SettingsActivity extends XposedBaseActivity {
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
+    @Override
+    public void onColorSelection(ColorChooserDialog dialog, @ColorInt int color) {
+        if (!dialog.isAccentMode()) {
+            XposedApp.getPreferences().edit().putInt("colors", color).apply();
+        }
+    }
+
+    public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
         private static final File mDisableResourcesFlag = new File(XposedApp.BASE_DIR + "conf/disable_resources");
+        private Preference colors;
 
         public SettingsFragment() {
         }
@@ -63,6 +71,7 @@ public class SettingsActivity extends XposedBaseActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.prefs);
 
+            colors = findPreference("colors");
             if (Build.VERSION.SDK_INT < 21) {
                 Preference heads_up = findPreference("heads_up");
                 heads_up.setEnabled(false);
@@ -110,16 +119,48 @@ public class SettingsActivity extends XposedBaseActivity {
                     return (enabled == mDisableResourcesFlag.exists());
                 }
             });
+            colors.setOnPreferenceClickListener(this);
+        }
 
-            Preference prefTheme = findPreference("theme");
-            prefTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    getActivity().recreate();
-                    getActivity().finish(); // prevents 2 instances of settings from opening
-                    return true;
-                }
-            });
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+
+            if (UIUtil.isLollipop())
+                getActivity().getWindow().setStatusBarColor(XposedApp.darkenColor(XposedApp.getColor(getActivity()), 0.85f));
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(
+                SharedPreferences sharedPreferences, String key) {
+            if (key.equals(colors.getKey()) || key.equals("theme"))
+                getActivity().recreate();
+        }
+
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            SettingsActivity act = (SettingsActivity) getActivity();
+            if (act == null)
+                return false;
+
+            if (preference.getKey().equals(colors.getKey()))
+                new ColorChooserDialog.Builder(act, preference.getTitleRes())
+                        .backButton(R.string.back)
+                        .doneButton(android.R.string.ok)
+                        .preselect(XposedApp.getColor(act)).show();
+
+            return true;
         }
     }
 }

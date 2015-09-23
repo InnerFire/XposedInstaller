@@ -38,8 +38,6 @@
         android:layout_gravity="start"
         android:clickable="true"
         android:clipToPadding="false"
-        app:itemIconTint="?attr/colorPrimary"
-        app:itemTextColor="?attr/colorPrimary"
         android:elevation="4dp"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer"

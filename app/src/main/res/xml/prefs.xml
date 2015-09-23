@@ -44,6 +44,10 @@
             android:key="heads_up"
             android:summary="@string/enable_heads_up_summary"
             android:title="@string/enable_heads_up"/>
+        <Preference
+            android:defaultValue="@color/colorPrimary"
+            android:key="colors"
+            android:title="@string/choose_color"/>
         <de.robv.android.xposed.installer.widget.IntegerListPreference
             android:key="default_view"
             android:title="@string/settings_default_view"

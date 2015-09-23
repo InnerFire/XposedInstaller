@@ -173,6 +173,10 @@
     <string name="enable_heads_up">Enable Heads-Up notification</string>
     <string name="enable_heads_up_summary">This option enables heads up notification on new/updated module</string>
 
+    <!-- Color Chooser -->
+    <string name="back">Back</string>
+    <string name="choose_color">Choose a color…</string>
+
     <!-- Support tab -->
     <string name="support_modules_label">Support for modules</string>
     <string name="support_modules_description">Long-click any module in the modules list and select \"%1$s\".</string>

@@ -1,7 +1,6 @@
 package de.robv.android.xposed.installer;
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.robv.android.xposed.installer.util.ThemeUtil;
-import de.robv.android.xposed.installer.util.UIUtil;
 
 public class SupportActivity extends XposedBaseActivity {
 	@Override
@@ -19,10 +17,6 @@ public class SupportActivity extends XposedBaseActivity {
 		super.onCreate(savedInstanceState);
 		ThemeUtil.setTheme(this);
 		setContentView(R.layout.activity_container);
-
-		if (UIUtil.isLollipop()) {
-			this.getWindow().setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
-		}
 
 		Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
