@@ -3,6 +3,7 @@ package de.robv.android.xposed.installer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,11 +30,10 @@ public class WelcomeActivity extends XposedBaseActivity implements
 
 	private static final String SELECTED_ITEM_ID = "SELECTED_ITEM_ID";
 
-	private Toolbar mToolbar;
 	private DrawerLayout mDrawerLayout;
 	private NavigationView mNavigationView;
-	private ActionBarDrawerToggle mDrawerToggle;
 	private int mSelectedId;
+	private Handler mDrawerHandler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,13 @@ public class WelcomeActivity extends XposedBaseActivity implements
 		setContentView(R.layout.activity_welcome);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
 
 		mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 		mNavigationView.setNavigationItemSelectedListener(this);
 
-		mDrawerToggle = new ActionBarDrawerToggle(this,
+		ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
 				mDrawerLayout,
 				mToolbar,
 				R.string.navigation_drawer_open,
@@ -80,6 +80,17 @@ public class WelcomeActivity extends XposedBaseActivity implements
 	}
 
 	private void navigate(final int itemId) {
+		mDrawerHandler.removeCallbacksAndMessages(null);
+		mDrawerHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				finishNavigation(itemId);
+			}
+		}, 250);
+		mDrawerLayout.closeDrawers();
+	}
+
+	private void finishNavigation(final int itemId) {
 		Fragment navFragment = null;
 		switch (itemId) {
 			case R.id.drawer_item_1:
