@@ -308,10 +308,6 @@ public final class ModuleUtil {
 			return (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0;
 		}
 
-		public boolean isForwardLocked() {
-			return (app.flags & FLAG_FORWARD_LOCK) != 0;
-		}
-
 		@Override
 		public String toString() {
 			return getAppName();

@@ -322,10 +322,6 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 				checkbox.setEnabled(false);
 				warningText.setText(getString(R.string.warning_installed_on_external_storage));
 				warningText.setVisibility(View.VISIBLE);
-			} else if (item.isForwardLocked()) {
-				checkbox.setEnabled(false);
-				warningText.setText(getString(R.string.warning_forward_locked));
-				warningText.setVisibility(View.VISIBLE);
 			} else {
 				checkbox.setEnabled(true);
 				warningText.setVisibility(View.GONE);
