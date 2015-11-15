@@ -111,8 +111,6 @@
     <string name="install_mode_recovery_auto">Recovery (automatická instalace zipu)</string>
     <string name="install_mode_recovery_manual">Recovery (zápis zipu na SD kartu, instalujte ručně)</string>
     <string name="settings_group_download">Stahování</string>
-    <string name="settings_enable_downloads">Povolit stahování</string>
-    <string name="settings_enable_downloads_summary">Povolit Xposed Instalátoru kontrolovat aktualizace a nové moduly</string>
     <string name="settings_group_experimental">Experimentální</string>
     <string name="settings_disable_resources">Zakázat ovlivňování prostředků</string>
     <string name="settings_disable_resources_summary">(Resource hooks)\nŘeší konflikt s tématy (theme engines).\n<b>VAROVÁNÍ:</b> Je-li aktivní, moduly měnící prostředky nebudou správně pracovat.</string>

@@ -235,16 +235,6 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
 		}
 	}
 
-	public boolean areDownloadsEnabled() {
-		if (!mPref.getBoolean("enable_downloads", true))
-			return false;
-
-		if (checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-			return false;
-
-		return true;
-	}
-
 	public static SharedPreferences getPreferences() {
 		return mInstance.mPref;
 	}

@@ -76,8 +76,6 @@
 
     <!-- Settings tab -->
     <string name="settings_group_download">Yüklə</string>
-    <string name="settings_enable_downloads">Yükləmələri aktiv edin</string>
-    <string name="settings_enable_downloads_summary">Xposed Yükləyiciyə yeni modullara və yeniləmələrin olub-olmadığına yoxlamağa icazə ver.</string>
     <string name="settings_group_experimental">Təcrübi</string>
     <string name="settings_performance_experiment">İcra təcrübəsi</string>
     <string name="settings_performance_experiment_summary">Əgər bunu aktiv etsəniz,sistem istifadəsi zəifləyə,arta və ya olduğu kimi qala bilər. Cəhd etməkdən çəkinməyin və bu barədə məruzə verin. Bunu dəyişdiktən sonra framework\'ü yenidən quraşdırmalı və cihazı yenidən başlatmalısınız.</string>

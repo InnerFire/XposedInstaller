@@ -135,8 +135,6 @@
     <string name="install_mode_recovery_auto">Recovery (flash zip автоматично)</string>
     <string name="install_mode_recovery_manual">Recovery (запис на zip в SD картата, flash ръчно)</string>
     <string name="settings_group_download">Изтегляне</string>
-    <string name="settings_enable_downloads">Позволи изтегляния</string>
-    <string name="settings_enable_downloads_summary">Позволи на Xposed Installer да проверява за обновления и нови модули</string>
     <string name="settings_release_type">Показвай версии</string>
     <string name="settings_group_experimental">Експериментално</string>
     <string name="settings_disable_resources">Изключевно прихващане на ресурси</string>

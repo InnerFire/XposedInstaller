@@ -180,9 +180,6 @@ public class RepoLoader {
 	public void triggerReload(final boolean force) {
 		mReloadTriggeredOnce = true;
 
-		if (!mApp.areDownloadsEnabled())
-			return;
-
 		if (force) {
 			resetLastUpdateCheck();
 		} else {
@@ -276,16 +273,10 @@ public class RepoLoader {
 	}
 
 	public boolean hasModuleUpdates() {
-		if (!mApp.areDownloadsEnabled())
-			return false;
-
 		return RepoDb.hasModuleUpdates();
 	}
 
 	public String getFrameworkUpdateVersion() {
-		if (!mApp.areDownloadsEnabled())
-			return null;
-
 		return RepoDb.getFrameworkUpdateVersion();
 	}
 
