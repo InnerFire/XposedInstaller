@@ -33,6 +33,7 @@ public class WelcomeActivity extends XposedBaseActivity implements
 	private DrawerLayout mDrawerLayout;
 	private NavigationView mNavigationView;
 	private int mSelectedId;
+    private int mPrevSelectedId;
 	private Handler mDrawerHandler = new Handler();
 
 	@Override
@@ -59,6 +60,7 @@ public class WelcomeActivity extends XposedBaseActivity implements
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		mSelectedId = mNavigationView.getMenu().getItem(prefs.getInt("default_view", 0)).getItemId();
+        mPrevSelectedId = mSelectedId;
 		mSelectedId = savedInstanceState == null ? mSelectedId : savedInstanceState.getInt(SELECTED_ITEM_ID);
 		mNavigationView.getMenu().findItem(mSelectedId).setChecked(true);
 
@@ -94,29 +96,36 @@ public class WelcomeActivity extends XposedBaseActivity implements
 		Fragment navFragment = null;
 		switch (itemId) {
 			case R.id.drawer_item_1:
+                mPrevSelectedId = itemId;
 				setTitle(R.string.app_name);
 				navFragment = new InstallerFragment();
 				break;
 			case R.id.drawer_item_2:
+                mPrevSelectedId = itemId;
 				setTitle(R.string.nav_item_modules);
 				navFragment = new ModulesFragment();
 				break;
 			case R.id.drawer_item_3:
+                mPrevSelectedId = itemId;
 				setTitle(R.string.nav_item_download);
 				navFragment = new DownloadFragment();
 				break;
 			case R.id.drawer_item_4:
+                mPrevSelectedId = itemId;
 				setTitle(R.string.nav_item_logs);
 				navFragment = new LogsFragment();
 				break;
 			case R.id.drawer_item_5:
 				startActivity(new Intent(this, SettingsActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
 				return;
 			case R.id.drawer_item_6:
 				startActivity(new Intent(this, SupportActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
 				return;
 			case R.id.drawer_item_7:
 				startActivity(new Intent(this, AboutActivity.class));
+                mNavigationView.getMenu().findItem(mPrevSelectedId).setChecked(true);
 				return;
 		}
 
