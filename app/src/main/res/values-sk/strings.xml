@@ -18,10 +18,23 @@
     <string name="welcome_update_available">Je dostupná jedna alebo viac aktualizácií pre moduly.</string>
     <string name="tabSettings">Nastavenia</string>
     <string name="tabSettingsDescription">Prejdite do tejto sekcie pre nastavenie Xposed Installera a frameworku.</string>
+    <string name="tabSupport">Podpora</string>
+    <string name="tabSupportDescription">Nájdite pomoc pre problémy s Xposed. Môžete tiež zaslať dar, ako vďaku za Xposed.</string>
     <string name="tabLogs">Záznamy</string>
     <string name="tabLogsDescription">Zobraziť, uložiť, odoslať a vymazať záznamy Xposed frameworku.</string>
     <string name="tabAbout">O aplikácii</string>
     <string name="tabAboutDescription">Zistite viac o ľuďoch, ktorí vytvorili Xposed, kde môžete získať podporu pre túto aplikáciu, atď.</string>
+
+    <!-- navigation view items -->
+    <string name="nav_item_install">Framework</string>
+    <string name="nav_item_modules">Moduly</string>
+    <string name="nav_item_download">Sťahovanie</string>
+    <string name="nav_item_settings">Nastavenia</string>
+    <string name="nav_item_support">Podpora</string>
+    <string name="nav_item_logs">Záznamy</string>
+    <string name="nav_item_about">O aplikácii</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Installer tab -->
     <string name="install">Inštalovať/Aktualizovať</string>
@@ -48,6 +61,10 @@
     <string name="uninstall_reverted">Súbor app_process bol nedávno nainštalovaný, ale teraz bola nájdená verzia \"%s\". Ak ste neočakávali obnovenie starého súboru, môžete skúsiť odinštaláciu cez Recovery (automatickú alebo ručnú).</string>
     <string name="tap_to_dismiss">Kliknite pre zatvorenie</string>
     <string name="sdcard_location">Karta SD: %s</string>
+    <string name="installation_lollipop">Xposed framework nie je nainštalovaný. Prosím, stiahnite najnovší súbor ZIP z XDA a ručne ho flashnite cez recovery.</string>
+    <string name="installed_lollipop">Xposed framework verzia %s je aktívny.</string>
+    <string name="installed_lollipop_inactive">Xposed framework verzia %s je nainštalovaný, ale nie je aktívny. Prosím, skontrolujte záznamy pre viac informácií.</string>
+    <string name="modules_updates_available">Aktualizácia modulu(ov) je dostupná</string>
 
     <!-- File operations -->
     <string name="root_failed">Nepodarilo sa získať root prístup.\n\nUistite sa, že je zariadenie správne rootnuté a príkazy konzoly nie sú blokované.</string>
@@ -85,6 +102,7 @@
     <string name="xposed_module_updated_notification_title">Aktualizovaný Xposed modul</string>
     <string name="xposed_module_updated_notification">Reštartujte pre aktiváciu zmien</string>
     <string name="warning_xposed_min_version">Tento modul vyžaduje novšiu verziu XposedBridge (%d) a preto nemôže byť aktivovaný.</string>
+    <string name="warning_installed_on_external_storage">Tento modul nemôže byť načítaný, pretože je nainštalovaný na karte SD, prosím, presuňte ho do interného úložiska.</string>
     <string name="no_min_version_specified">Tento modul nešpecifikuje verziu XposedBridge, ktorú potrebuje.</string>
     <string name="warning_min_version_too_low">Tento modul bol vytvorený pre verziu XposedBridge %1$d, ale kvôli nekompatibilným zmenám vo verzii %2$d bol deaktivovaný.</string>
     <string name="module_launch">Spustiť</string>
@@ -135,8 +153,6 @@
     <string name="install_mode_recovery_auto">Recovery (automaticky flashnúť zip)</string>
     <string name="install_mode_recovery_manual">Recovery (zapísať zip na kartu SD, flashnúť ručne)</string>
     <string name="settings_group_download">Sťahovanie</string>
-    <string name="settings_enable_downloads">Povoliť sťahovania</string>
-    <string name="settings_enable_downloads_summary">Povoliť Xposed Installeru kontrolovanie nových modulov a aktualizácií</string>
     <string name="settings_release_type">Zobraziť verzie</string>
     <string name="settings_group_experimental">Experimentálne</string>
     <string name="settings_disable_resources">Zakázať zmenu zdrojov</string>
@@ -148,6 +164,25 @@
     <string name="settings_theme_light">Svetlá</string>
     <string name="settings_theme_dark">Tmavá</string>
     <string name="settings_theme_black">Čierna (vhodná pre AMOLED displeje)</string>
+    <string name="settings_default_view">Predvolené zobrazenie</string>
+    <string name="settings_default_view_framework">Framework</string>
+    <string name="settings_default_view_modules">Moduly</string>
+    <string name="settings_default_view_downloads">Sťahovanie</string>
+    <string name="settings_default_view_logs">Záznamy</string>
+    <string name="enable_heads_up">Povoliť nahliadnutie upozornenia</string>
+    <string name="enable_heads_up_summary">Táto možnosť povolí nahliadnutie upozornenia pri novom/aktualizovanom module</string>
+
+    <!-- Color Chooser -->
+    <string name="back">Späť</string>
+    <string name="choose_color">Zvoľte farbu…</string>
+
+    <!-- Support tab -->
+    <string name="support_modules_label">Podpora pre moduly</string>
+    <string name="support_modules_description">Podržte dlho na module v zozname modulov a zvoľte \"%1$s\".</string>
+    <string name="support_framework_label">Podpora pre framework/Installer</string>
+    <string name="support_faq_label">FAQ/známe chyby</string>
+    <string name="support_donate_label">Podporiť</string>
+    <string name="support_donate_description">Ak chcete poďakovať za Xposed, môžete poslať dar pre rovo89 tu:</string>
 
     <!-- Logs tab  -->
     <string name="logs_load_failed">Nemožno čítať záznam:</string>
@@ -168,7 +203,6 @@
     <string name="about_version_label">Verzia aplikácie:</string>
     <string name="about_source_label">Zdrojový kód:</string>
     <string name="about_support_label">Získajte podporu na:</string>
-    <string name="about_support_warning">Tento odkaz je <b>len</b> pre Installer a framework! Ak potrebujete pomoc s modulom, <b>nepoužívajte</b> ho, namiesto toho sa obráťte na autora modulu.</string>
     <string name="about_libraries_label">Použité knižnice:</string>
 
     <!-- DownloadView -->
@@ -180,6 +214,7 @@
     <string name="download_view_waiting">Čaká sa na sťahovanie</string>
     <string name="download_view_successful">Sťahovanie bolo úspešné</string>
     <string name="download_view_failed">Sťahovanie zlyhalo (chyba %d)</string>
+    <string name="download_view_size">Veľkosť: %s KB</string>
 
     <!-- DownloadUtils -->
     <string name="download_md5sum_incorrect">Kontrolný súčet MD5 je nesprávny (stiahnuté: %1$s, očakávané: %2$s)</string>
